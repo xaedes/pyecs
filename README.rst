@@ -1,3 +1,3 @@
 pyecs
 --------
-Python Entity Component System Framework inspired from Unity
+Python Entity Component System Framework inspired by Unity
