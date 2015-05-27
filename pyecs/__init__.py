@@ -1,4 +1,6 @@
 
 from Entity import Entity
 from Component import Component
-from .decorator import *
+from .decorators import *
+import Components
+from Application import Application
