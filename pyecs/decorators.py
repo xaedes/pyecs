@@ -18,7 +18,7 @@ def with_component(function, component_type, required = False):
     # populate function's kwargs with components
     component_name = component_type.__name__.lower()
     function._kwargs[component_name] = component
-    
+
     return function()
 
 @decorator
@@ -26,8 +26,8 @@ def with_components(function, optional = [], required = []):
     self = function._args[0]
 
     # get components
-    optional = dict[(component_type.__name__.lower(),self.get_component(component_type)) for component_type in optional]
-    required = dict[(component_type.__name__.lower(),self.get_component(component_type)) for component_type in required]
+    optional = dict([(component_type.__name__.lower(),self.get_component(component_type)) for component_type in optional])
+    required = dict([(component_type.__name__.lower(),self.get_component(component_type)) for component_type in required])
 
     # check if any required component is not available
     if any(lambda x: x[1] is None,required):
