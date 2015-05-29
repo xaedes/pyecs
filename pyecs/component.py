@@ -11,26 +11,31 @@ class Component(object):
     def __init__(self, entity = None):
         super(Component, self).__init__()
         self.entity = entity
+        self.__hotswap_callback__ = False
 
     def register_callbacks(self):
         callbacks = [method for method in dir(self) if callable(getattr(self, method))]
         this = self
         for callback in callbacks:
             if hasattr(getattr(self,callback),"__callback__"):
-                def wrapper(callback):
-                    def inner_wrapper(*args, **kwargs):
-                        if hasattr(this,callback):
-                            try:
-                                return getattr(this,callback)(*args, **kwargs)
-                            except:
-                                import traceback
-                                traceback.print_exc()
+                if self.__hotswap_callback__:                
+                    # retrieves callback everytime, useful for hotswapping
+                    def wrapper(callback):
+                        def inner_wrapper(*args, **kwargs):
+                            if hasattr(this,callback):
+                                try:
+                                    return getattr(this,callback)(*args, **kwargs)
+                                except:
+                                    import traceback
+                                    traceback.print_exc()
+                                    return None
+                            else:
                                 return None
-                        else:
-                            return None
-                    return inner_wrapper
-
-                self.entity.register_callback(callback, wrapper(callback))
+                        return inner_wrapper
+                    self.entity.register_callback(callback, wrapper(callback))
+                else:
+                    # just use the callback
+                    self.entity.register_callback(callback, getattr(this,callback))
 
     def get_component(self, component_type):
         if self.entity is not None:
