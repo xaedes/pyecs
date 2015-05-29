@@ -34,10 +34,10 @@ def with_components(function, optional = [], required = []):
         return None
 
     # populate function's kwargs with components
-    for component_name, component in optional:
+    for component_name, component in optional.iteritems():
         function._kwargs[component_name] = component
 
-    for component_name, component in required:
+    for component_name, component in required.iteritems():
         function._kwargs[component_name] = component
 
 

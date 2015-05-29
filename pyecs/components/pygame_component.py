@@ -31,6 +31,7 @@ class Pygame(Component):
             })
 
         # Used to manage how fast the screen updates
+        self.fps = fps
         self.clock = pygame.time.Clock()
 
     @callback
@@ -66,6 +67,8 @@ class Pygame(Component):
             if event.type in self.pygame_mappings:
                 self.entity.fire_callbacks(self.pygame_mappings[event.type], event)
         
+        # Limit FPS
+        self.clock.tick(self.fps)
 
     @callback
     def component_added(self, component, entity):

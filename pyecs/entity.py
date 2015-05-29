@@ -2,14 +2,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
-from Events import Events
+from events import Events
 
 from collections import defaultdict
 
+
 class Entity(Events):
+    __uid__ = 0
     """docstring for Entity"""
     def __init__(self, parent = None):
         super(Entity, self).__init__()
+        self.uid = Entity.__uid__
+        Entity.__uid__ += 1
+
         self.components = defaultdict(list)
         self.parent = parent
         self.children = list()

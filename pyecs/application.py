@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import division    
 
-from pyecs import *
-
 from time import time
-from Components import *
+
+from pyecs import *
 
 import hotswap
 hotswap.run()
