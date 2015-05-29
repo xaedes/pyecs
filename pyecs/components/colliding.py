@@ -5,7 +5,6 @@ from __future__ import division    # Standardmäßig float division - Ganzzahldi
 import pygame
 from pyecs import *
 from pyecs.components import Pose,Size
-from components import Velocity
 
 class Colliding(Component):
     """docstring for Colliding"""
