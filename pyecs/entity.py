@@ -62,3 +62,35 @@ class Entity(Events):
             return self.components[component_type][0]
         else:
             return None
+
+    def find_root(self):
+        entity = self
+        while entity.parent is not None:
+            entity = entity.parent
+
+        return entity
+
+    def find_all_entities_with_component(self, component_type):
+        return self.find_root().find_entities_with_component(component_type)
+
+    def find_entities_with_component(self, component_type):
+        return self.find_entities(lambda entity: entity.has_component(component_type))
+
+    def find_entity_with_component(self, component_type):
+        l = self.find_entities_with_component(component_type)
+        if len(l) == 0:
+            return None
+        else:
+            return l[0]
+
+    def find_entities(self, predicate):
+        entities = []
+        stack = [self]
+        while len(stack) > 0:
+            entity = stack.pop()
+            if predicate(entity):
+                entities.append(entity)
+
+            stack.extend([child for child in entity.children])
+
+        return entities
