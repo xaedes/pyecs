@@ -18,9 +18,9 @@ class BasicPygame(Application):
 
     def setup_scene(self):
         super(BasicPygame, self).setup_scene()
-        self.entity.add_entity(self.create())
+        self.entity.add_entity(self.create_draggable_circle())
 
-    def create(self):
+    def create_draggable_circle(self):
         entity = Entity()
         entity.add_component(Pose(100,100,0))
         entity.add_component(Size(size=15))
