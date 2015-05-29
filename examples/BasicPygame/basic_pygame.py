@@ -3,8 +3,8 @@
 from __future__ import division
 
 import pyecs
-from pyecs import Application
-# from pyecs.Components import Pygame
+from pyecs import Application, Entity
+from pyecs.components import Pygame, Pose, Size, DrawSizeAsCircle, Draggable
 
 class BasicPygame(Application):
     """docstring for Experiment"""
@@ -13,10 +13,19 @@ class BasicPygame(Application):
     
     def setup_main_entity(self):
         super(BasicPygame, self).setup_main_entity()
-        self.entity.add_component(pyecs.Components.Pygame())
+        self.entity.add_component(Pygame())
 
     def setup_scene(self):
         super(BasicPygame, self).setup_scene()
+        self.entity.add_entity(self.create())
+
+    def create(self):
+        entity = Entity()
+        entity.add_component(Pose(100,100,0))
+        entity.add_component(Size(size=15))
+        entity.add_component(DrawSizeAsCircle(color=(255,0,0)))
+        entity.add_component(Draggable())
+        return entity
 
 def main():
     # profile(BasicPygame())
