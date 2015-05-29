@@ -5,6 +5,7 @@ from __future__ import division    # Standardmäßig float division - Ganzzahldi
 from pyecs import *
 from pyecs.components import Pose,Size
 from components import Velocity
+
 class BounceInside(Component):
     """docstring for BounceInside"""
     def __init__(self, width, height, x=0, y=0, *args,**kwargs):
