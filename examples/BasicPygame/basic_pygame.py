@@ -4,7 +4,7 @@ from __future__ import division
 
 import pyecs
 from pyecs import Application, Entity
-from pyecs.components import Pygame, Pose, Size, DrawSizeAsCircle, Draggable
+from pyecs.components import Pygame, ColorFill, Pose, Size, DrawSizeAsCircle, Draggable
 
 class BasicPygame(Application):
     """docstring for Experiment"""
@@ -14,6 +14,7 @@ class BasicPygame(Application):
     def setup_main_entity(self):
         super(BasicPygame, self).setup_main_entity()
         self.entity.add_component(Pygame())
+        self.entity.add_component(ColorFill(color=(0,0,0)))
 
     def setup_scene(self):
         super(BasicPygame, self).setup_scene()
