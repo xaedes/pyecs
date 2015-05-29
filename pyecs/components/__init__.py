@@ -3,7 +3,7 @@ from size import Size
 from pygame_component import Pygame
 from draggable import Draggable
 from draw_size_as_circle import DrawSizeAsCircle
+from draw_size_as_rectangle import DrawSizeAsRectangle
 from hotswap_controller import HotswapController
 from color_fill import ColorFill
-
-
+from colliding import Colliding
