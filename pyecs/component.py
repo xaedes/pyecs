@@ -32,6 +32,7 @@ class Component(object):
                             else:
                                 return None
                         return inner_wrapper
+                    
                     self.entity.register_callback(callback, wrapper(callback))
                 else:
                     # just use the callback
