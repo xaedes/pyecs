@@ -35,6 +35,7 @@ class Draggable(Component):
             if time() - self.last_move > self.move_every:
                 self.last_move = time()
                 pose.x, pose.y = event.pos
+                self.entity.fire_callbacks("dragging", self)
     
     @callback
     @with_components(required=[Pose,Size])
