@@ -51,8 +51,10 @@ class Component(object):
 
     @callback
     def component_added(self, component, entity):
-        Component.__added_components__[type(component)].append(component)
+        if self == component:
+            Component.__added_components__[type(component)].append(component)
 
     @callback
     def component_removed(self, component, entity):
-        Component.__added_components__[type(component)].remove(component)
+        if self == component:
+            Component.__added_components__[type(component)].remove(component)
