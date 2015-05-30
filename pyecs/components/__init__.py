@@ -7,3 +7,4 @@ from draw_size_as_rectangle import DrawSizeAsRectangle
 from hotswap_controller import HotswapController
 from color_fill import ColorFill
 from colliding import Colliding
+from image_background import ImageBackground
