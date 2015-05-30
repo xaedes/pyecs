@@ -11,7 +11,7 @@ class Component(object):
     def __init__(self, entity = None):
         super(Component, self).__init__()
         self.entity = entity
-        self.__hotswap_callback__ = False
+        self.__hotswap_callback__ = True
 
     def register_callbacks(self):
         callbacks = [method for method in dir(self) if callable(getattr(self, method))]
@@ -27,26 +27,33 @@ class Component(object):
                                     return getattr(this,callback)(*args, **kwargs)
                                 except:
                                     import traceback
+                                    print self
                                     traceback.print_exc()
                                     return None
                             else:
                                 return None
                         return inner_wrapper
-                    
+
                     self.entity.register_callback(callback, wrapper(callback))
                 else:
                     # just use the callback
                     self.entity.register_callback(callback, getattr(this,callback))
 
-    def get_component(self, component_type):
+    def has_component(self, *args, **kwargs):
         if self.entity is not None:
-            return self.entity.get_component(component_type)
+            return self.entity.has_component(*args, **kwargs)
         else:
             return None
 
-    def find_parent_entity_with_component(self, component_type):
+    def get_component(self, *args, **kwargs):
         if self.entity is not None:
-            return self.entity.find_parent_entity_with_component(component_type)
+            return self.entity.get_component(*args, **kwargs)
+        else:
+            return None
+
+    def find_parent_entity_with_component(self, *args, **kwargs):
+        if self.entity is not None:
+            return self.entity.find_parent_entity_with_component(*args, **kwargs)
         else:
             return None
 
