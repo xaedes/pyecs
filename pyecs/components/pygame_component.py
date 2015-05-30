@@ -37,7 +37,7 @@ class Pygame(Component):
     @callback
     def setup(self):
         pygame.init()
-        self.screen = pygame.display.set_mode(self.size)
+        self.screen = pygame.display.set_mode(self.size,pygame.DOUBLEBUF)
         pygame.display.set_caption(self.caption)
 
     @callback
