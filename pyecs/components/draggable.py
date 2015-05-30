@@ -25,6 +25,7 @@ class Draggable(Component):
         if event.button == 1: # left 
             if pose.distance_to_xy(*event.pos) < size.size:
                 self.selected = True
+                self.entity.fire_callbacks("drag", self)
                     
     @callback    
     @with_components(required=[Pose,Size])
@@ -40,5 +41,6 @@ class Draggable(Component):
     def mousebuttonup(self, event, pose, size):
         # deselect
         self.selected = False
+        self.entity.fire_callbacks("drop", self)
 
 
