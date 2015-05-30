@@ -30,7 +30,7 @@ def with_components(function, optional = [], required = []):
     required = dict([(component_type.__name__.lower(),self.get_component(component_type)) for component_type in required])
 
     # check if any required component is not available
-    if any(lambda x: x[1] is None,required):
+    if any(component is None for component in required.itervalues()):
         return None
 
     # populate function's kwargs with components
