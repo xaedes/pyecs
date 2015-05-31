@@ -15,11 +15,11 @@ class FollowBall(Component):
     @callback
     def entity_added(self, parent, entity):
         if self.entity == entity:
-        	self.ball = self.entity.find_root().find_entity_with_component(Ball)
+            self.ball = self.entity.find_root().find_entity_with_component(Ball)
 
     @callback
     @with_components(required=[Pose])
     def update(self, dt, pose):
-    	if self.ball is not None:
-        	pose.y = self.ball.get_component(Pose).y
+        if self.ball is not None:
+            pose.y = self.ball.get_component(Pose).y
 
