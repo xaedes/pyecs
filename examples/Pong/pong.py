@@ -12,12 +12,13 @@ class Pong(Application):
     """docstring for Experiment"""
     def __init__(self):
         super(Pong, self).__init__()
+        pygame.mouse.set_visible(False)
 
     def setup_main_entity(self):
         super(Pong, self).setup_main_entity()
         self.entity.add_component(Pygame())
         self.entity.add_component(ColorFill(color=(0,0,0)))
-        pygame.mouse.set_visible(False)
+        self.entity.add_component(PropagateCallback(["update","draw","mousemotion"]))
 
     def setup_scene(self):
         super(Pong, self).setup_scene()
