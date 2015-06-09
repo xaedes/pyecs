@@ -22,6 +22,10 @@ class Size(Component):
     		# two-dimensional size
     		return (pose.x - self.size[0]/2, pose.y - self.size[1]/2, self.size[0], self.size[1])
 
+    def bounding_radius(self):
+        ((mx,my),r) = self.bounding_circle()
+        return r
+
     def bounding_circle(self):
         # get bounding box
         bbox = self.bounding_box()
