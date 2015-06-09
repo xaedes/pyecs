@@ -8,4 +8,5 @@ from hotswap_controller import HotswapController
 from color_fill import ColorFill
 from colliding import Colliding
 from image_background import ImageBackground
+from propagate_callback import PropagateCallback
 from backpropagate_callback import BackpropagateCallback

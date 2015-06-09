@@ -14,8 +14,10 @@ class Draggable(Component):
         self.selected = False
         self.last_move = time()
         
-        # specify how much time shall elapse between to Pose updates
+        # specify how much time shall elapse between two Pose updates
         self.move_every = move_every
+
+        # print "Draggable()"
 
 
     @callback    
@@ -23,7 +25,9 @@ class Draggable(Component):
     def mousebuttondown(self, event, pose, size):
         # select 
         if event.button == 1: # left 
-            if pose.distance_to_xy(*event.pos) < size.size:
+            # print "mousebuttondown", event
+            if pose.distance_to_xy(*event.pos) < size.bounding_radius():
+                # print "self.selected = True", pose.distance_to_xy(*event.pos), size.bounding_radius(), size.size, pose, event.pos
                 self.selected = True
                 self.entity.fire_callbacks("drag", self)
                     
@@ -32,6 +36,7 @@ class Draggable(Component):
     def mousemotion(self, event, pose, size):
         # move if selected
         if self.selected:
+            # print "mousemotion", event
             if time() - self.last_move > self.move_every:
                 self.last_move = time()
                 pose.x, pose.y = event.pos
@@ -42,6 +47,7 @@ class Draggable(Component):
     def mousebuttonup(self, event, pose, size):
         # deselect
         if self.selected:
+            # print "mousebuttonup", event
             self.selected = False
             self.entity.fire_callbacks("drop", self)
 

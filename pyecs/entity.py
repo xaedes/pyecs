@@ -19,22 +19,6 @@ class Entity(Events):
         self.parent = parent
         self.children = list()
 
-    def fire_callbacks(self, *args, **kwargs):
-        self.fire_callbacks_no_propagation(*args, **kwargs)
-        self.propagate_callback(*args, **kwargs)
-
-    def fire_callbacks_no_propagation(self, key, *args, **kwargs):
-        # fire callbacks in this entity
-        if key in self.callbacks:
-            for callback in self.callbacks[key]:
-                callback(*args,**kwargs)
-                
-    def propagate_callback(self, key, *args, **kwargs):
-        # propagate to children
-        for child in self.children:
-            child.fire_callbacks(key, *args, **kwargs)
-
-
     def add_component(self, component):
         if component not in self.components[type(component)]:
             component.entity = self
@@ -58,7 +42,8 @@ class Entity(Events):
     def add_entity(self, entity):
         self.children.append(entity)
         entity.parent = self
-        self.fire_callbacks("entity_added", self, entity)
+        entity.fire_callbacks("entity_added", self, entity)
+        
         
     def has_component(self, component_type):
         return len(self.components[component_type])>0
