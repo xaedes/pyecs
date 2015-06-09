@@ -17,6 +17,10 @@ class Events(object):
         if callback not in self.callbacks[key]:
             self.callbacks[key].append(callback)
 
+    def remove_callback(self, key, callback):
+        if callback in self.callbacks[key]:
+            self.callbacks[key].remove(callback)
+
     def fire_callbacks(self, key, *args, **kwargs):
         if key in self.callbacks:
             for callback in self.callbacks[key]:
