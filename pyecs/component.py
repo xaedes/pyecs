@@ -11,7 +11,8 @@ class Component(object):
     def __init__(self, entity = None):
         super(Component, self).__init__()
         self.entity = entity
-        self.__hotswap_callback__ = True
+        # self.__hotswap_callback__ = True
+        self.__hotswap_callback__ = False
 
     def register_callbacks(self):
         callbacks = [method for method in dir(self) if callable(getattr(self, method))]
