@@ -32,10 +32,12 @@ class Application(object):
     def __init__(self):
         super(Application, self).__init__()
         Application.instance = self
+        
+        self.done = False
+
         self.setup_main_entity()
         self.setup_scene()
 
-        self.done = False
 
         self.entity.fire_callbacks("setup")
         self.register_events()
@@ -99,9 +101,11 @@ def profile(operation):
     import cProfile
     pr = cProfile.Profile()
     pr.enable()
-    operation()
-    pr.disable()
-    pr.dump_stats('profile')
+    try:
+        operation()
+    finally:
+        pr.disable()
+        pr.dump_stats('profile')
 
 def main():
     # profile(App)
