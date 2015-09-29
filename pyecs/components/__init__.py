@@ -10,3 +10,4 @@ from colliding import Colliding
 from image_background import ImageBackground
 from propagate_callback import PropagateCallback
 from backpropagate_callback import BackpropagateCallback
+from keyboard import Keyboard
