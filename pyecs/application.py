@@ -29,7 +29,7 @@ onHotswap.notify = False
 
 class Application(object):
     """docstring for Application"""
-    def __init__(self):
+    def __init__(self, auto_spin = True):
         super(Application, self).__init__()
         Application.instance = self
         
@@ -42,7 +42,8 @@ class Application(object):
         self.entity.fire_callbacks("setup")
         self.register_events()
 
-        self.spin()
+        if auto_spin:
+            self.spin()
 
     def on_hotswap(self):
         # self.setup_scene() # can be useful
