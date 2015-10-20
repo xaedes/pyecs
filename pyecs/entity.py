@@ -26,6 +26,9 @@ class Entity(Events):
             self.components[type(component)].append(component)
             self.fire_callbacks("component_added", component, component.entity)
 
+            return component
+        return None
+
     def remove_component(self, component):
         if component in self.components[type(component)]:
             self.components[type(component)].remove(component)
