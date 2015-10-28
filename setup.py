@@ -13,7 +13,7 @@ setup(
     author="xaedes",
     author_email="xaedes@gmail.com",
     license="MIT",
-    packages=["pyecs"],
+    packages=["pyecs","pyecs.components"],
     install_requires=[
         "funcy",
     ],
