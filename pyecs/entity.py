@@ -9,6 +9,7 @@ from collections import defaultdict
 
 class Entity(Events):
     __uid__ = 0
+    __tags__ = defaultdict(set)
     """docstring for Entity"""
     def __init__(self, parent = None):
         super(Entity, self).__init__()
@@ -18,6 +19,17 @@ class Entity(Events):
         self.components = defaultdict(list)
         self.parent = parent
         self.children = list()
+        self.tags = set()
+
+    def add_tag(self, tag):
+        Entity.__tags__[tag].add(self)
+        self.tags.add(tag)
+
+    def remove_tag(self, tag):
+        if tag in self.tags:
+            Entity.__tags__[tag].remove(self)
+
+
 
     def add_component(self, component):
         if component not in self.components[type(component)]:
@@ -70,12 +82,33 @@ class Entity(Events):
     def find_entities_with_component(self, component_type):
         return self.find_entities(lambda entity: entity.has_component(component_type))
 
-    def find_entity_with_component(self, component_type):
-        l = self.find_entities_with_component(component_type)
-        if len(l) == 0:
+    def first_or_none(self, lst):
+        if len(lst) == 0:
             return None
         else:
-            return l[0]
+            return lst[0]
+
+    def find_entity_with_component(self, component_type):
+        return self.first_or_none(self.find_entities_with_component(component_type))
+
+    def find_entities_with_tag(self, tag):
+        return Entity.__tags__[tag]
+
+    def find_entity_with_tag(self, tag):
+        return self.first_or_none(list(self.find_entities_with_tag(tag)))
+
+    def find_entities_with_tags(self, tags):
+        # finds all entities that have all of the given tags
+        entities = None
+        for tag in tags:
+            if entities is None:
+                entities = self.find_entities_with_tag(tag)
+            entities.intersection_update(self.find_entities_with_tag(tag))
+        return entities
+
+    def find_entity_with_tags(self, tags):
+        return self.first_or_none(list(self.find_entities_with_tags(tags)))
+
 
     def find_entities(self, predicate):
         entities = []
