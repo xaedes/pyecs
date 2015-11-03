@@ -102,8 +102,9 @@ class Entity(Events):
         entities = None
         for tag in tags:
             if entities is None:
-                entities = self.find_entities_with_tag(tag)
-            entities.intersection_update(self.find_entities_with_tag(tag))
+                entities = self.find_entities_with_tag(tag).copy()
+            else:
+                entities.intersection_update(self.find_entities_with_tag(tag))
         return entities
 
     def find_entity_with_tags(self, tags):
