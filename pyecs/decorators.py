@@ -43,6 +43,7 @@ def with_components(function, optional = [], required = []):
 
     return function()
 
-def callback(function):
+def callback(function, key = None):
     function.__callback__ = True
+    function.__callback_key__ = key
     return function

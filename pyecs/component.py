@@ -18,7 +18,12 @@ class Component(object):
         callbacks = [method for method in dir(self) if callable(getattr(self, method))]
         this = self
         for callback in callbacks:
-            if hasattr(getattr(self,callback),"__callback__"):
+            method = getattr(self,callback)
+            if hasattr(method,"__callback__"):
+                key = method.__callback_key__
+                if key is None:
+                    key = callback
+
                 if self.__hotswap_callback__:                
                     # retrieves callback everytime, useful for hotswapping
                     def wrapper(callback):
@@ -38,7 +43,7 @@ class Component(object):
                     self.entity.register_callback(callback, wrapper(callback))
                 else:
                     # just use the callback
-                    self.entity.register_callback(callback, getattr(this,callback))
+                    self.entity.register_callback(key, method)
 
     def has_component(self, *args, **kwargs):
         if self.entity is not None:
