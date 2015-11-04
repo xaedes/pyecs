@@ -25,3 +25,11 @@ class Events(object):
         if key in self.callbacks:
             for callback in self.callbacks[key]:
                 callback(*args,**kwargs)
+
+    # common events:
+    # start        : called after setup/initialization complete, right before update loop starts
+    # update(dt)   : called in every iteration of the update loop
+    # quit(event)  : called when application quits
+    # awake        : called after an entity is completed; breaths life to it, telling it
+    #                everything it needs is available now; called right before return statement 
+    #                in creation function of entity
