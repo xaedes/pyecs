@@ -59,6 +59,7 @@ class Entity(Events):
         entity.parent = self
         entity.fire_callbacks("entity_added", self, entity)
         
+        return entity
         
     def has_component(self, component_type):
         return len(self.components[component_type])>0
