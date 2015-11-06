@@ -179,4 +179,14 @@ class Entity(Events):
         components = [item for sublist in components for item in sublist] #http://stackoverflow.com/a/952952/798588
 
         return components
-        
+		
+    def __str__(self):
+        return "Entity %s, %s" % (self.uid_path(),  self.print_components(_return=True))
+
+    def print_components(self, _return=False):
+        components = map(str,self.all_components())
+        components = ', '.join(components)
+        if _return:
+            return components
+        else:
+            print components
