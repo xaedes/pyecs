@@ -72,3 +72,6 @@ class Component(object):
     def component_removed(self, component, entity):
         if self == component:
             Component.__added_components__[type(component)].remove(component)
+
+    def __str__(self):
+        return type(self).__name__
