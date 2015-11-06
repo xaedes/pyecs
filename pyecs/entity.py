@@ -92,6 +92,21 @@ class Entity(Events):
 
         return entity
 
+    def entity_path(self):
+        path = [self]
+
+        entity = self
+        while entity.parent is not None:
+            entity = entity.parent
+            path.append(entity)
+        path = reversed(path)
+        return path
+
+    def uid_path(self):
+        path = '.'.join([str(e.uid) for e in self.entity_path()])
+
+        return path
+
     def find_all_entities_with_component(self, component_type):
         return self.find_root().find_entities_with_component(component_type)
 
