@@ -4,6 +4,13 @@ from __future__ import division
 
 from collections import defaultdict
 
+### useful for debugging purposes
+### uncomment as needed
+#
+# from pprint import pprint
+# import traceback
+# import inspect
+
 class Events(object):
     """docstring for Events"""
     def __init__(self):
