@@ -153,3 +153,24 @@ class Entity(Events):
             stack.extend([child for child in entity.children])
 
         return entities
+        
+    def traverse_entities(self, callback):
+        stack = [self]
+        while len(stack)>0:
+            entity = stack.pop()
+            for child in reversed(entity.children):
+                stack.append(child)
+
+            callback(entity)
+
+    def traverse_entities_accum(self, callback, accum = None):
+        stack = [self]
+        while len(stack)>0:
+            entity = stack.pop()
+            for child in reversed(entity.children):
+                stack.append(child)
+
+            accum = callback(entity, accum)
+
+        return accum
+        
