@@ -60,7 +60,22 @@ class Entity(Events):
         entity.fire_callbacks("entity_added", self, entity)
         
         return entity
-        
+
+    def remove_entity(self, entity):
+        if entity in self.children:
+            entity.parent = None
+            self.children.remove(entity)
+            entity.fire_callbacks("entity_removed", self, entity)
+            return True   # was removed
+        else:
+            return False  # was not removed
+
+    def remove_from_parent(self):
+        if self.parent is not None:
+            return self.parent.remove_entity(self)
+        else:
+            return False # was not removed
+
     def has_component(self, component_type):
         return len(self.components[component_type])>0
 
