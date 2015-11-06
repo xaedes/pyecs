@@ -190,3 +190,21 @@ class Entity(Events):
             return components
         else:
             print components
+
+    def print_structure(self, _return=False):
+        lines = self.traverse_entities_accum(
+            lambda entity,lines: 
+                lines + [(entity.uid_path(), entity.print_components(_return=True))],
+            [])
+
+        fst_column_width = max([len(a) for a,b in lines])
+        fst_column_width += 4
+
+        lines = [a + str(' '*(fst_column_width-len(a))) + b  for a,b in lines]
+
+        lines = '\n'.join(lines)
+
+        if _return:
+            return lines
+        else:
+            print lines
