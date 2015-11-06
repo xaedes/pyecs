@@ -174,3 +174,9 @@ class Entity(Events):
 
         return accum
         
+    def all_components(self):
+        components = [components for component_type,components in self.components.iteritems()]
+        components = [item for sublist in components for item in sublist] #http://stackoverflow.com/a/952952/798588
+
+        return components
+        
