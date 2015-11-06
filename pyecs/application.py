@@ -98,7 +98,7 @@ class Application(object):
         self.quit()
 
 
-def profile(operation):
+def profile(operation, filename='profile'):
     import cProfile
     pr = cProfile.Profile()
     pr.enable()
@@ -106,7 +106,7 @@ def profile(operation):
         operation()
     finally:
         pr.disable()
-        pr.dump_stats('profile')
+        pr.dump_stats(filename)
 
 def main():
     # profile(App)
