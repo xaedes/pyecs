@@ -113,33 +113,39 @@ class Entity(Events):
     def find_entities_with_component(self, component_type):
         return self.find_entities(lambda entity: entity.has_component(component_type))
 
-    def first_or_none(self, lst):
+
+    def find_entity_with_component(self, component_type):
+        return self.first_or_none(self.find_entities_with_component(component_type))
+
+    @classmethod
+    def first_or_none(CLS, lst):
         if len(lst) == 0:
             return None
         else:
             return lst[0]
 
-    def find_entity_with_component(self, component_type):
-        return self.first_or_none(self.find_entities_with_component(component_type))
-
-    def find_entities_with_tag(self, tag):
+    @classmethod
+    def find_entities_with_tag(CLS, tag):
         return Entity.__tags__[tag]
 
-    def find_entity_with_tag(self, tag):
-        return self.first_or_none(list(self.find_entities_with_tag(tag)))
+    @classmethod
+    def find_entity_with_tag(CLS, tag):
+        return CLS.first_or_none(list(CLS.find_entities_with_tag(tag)))
 
-    def find_entities_with_tags(self, tags):
+    @classmethod
+    def find_entities_with_tags(CLS, tags):
         # finds all entities that have all of the given tags
         entities = None
         for tag in tags:
             if entities is None:
-                entities = self.find_entities_with_tag(tag).copy()
+                entities = CLS.find_entities_with_tag(tag).copy()
             else:
-                entities.intersection_update(self.find_entities_with_tag(tag))
+                entities.intersection_update(CLS.find_entities_with_tag(tag))
         return entities
 
-    def find_entity_with_tags(self, tags):
-        return self.first_or_none(list(self.find_entities_with_tags(tags)))
+    @classmethod
+    def find_entity_with_tags(CLS, tags):
+        return CLS.first_or_none(list(CLS.find_entities_with_tags(tags)))
 
 
     def find_entities(self, predicate):
