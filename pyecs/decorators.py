@@ -45,5 +45,12 @@ def with_components(function, optional = [], required = []):
 
 def callback(function, key = None):
     function.__callback__ = True
+    function.__component_callback__ = False
+    function.__callback_key__ = key
+    return function
+
+def component_callback(function, key = None):
+    function.__callback__ = True
+    function.__component_callback__ = True
     function.__callback_key__ = key
     return function

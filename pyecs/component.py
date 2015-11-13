@@ -1,11 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-from __future__ import division    
+from __future__ import division  
+
+from events import Events
 
 from collections import defaultdict
 from .decorators import callback
 
-class Component(object):
+class Component(Events):
     __added_components__ = defaultdict(list)
     """docstring for Component"""
     def __init__(self, entity = None):
@@ -21,8 +23,15 @@ class Component(object):
             method = getattr(self,callback)
             if hasattr(method,"__callback__"):
                 key = method.__callback_key__
+
                 if key is None:
                     key = callback
+                
+                if method.__component_callback__:
+                    register_on = self
+                else:
+                    register_on = self.entity
+
 
                 if self.__hotswap_callback__:                
                     # retrieves callback everytime, useful for hotswapping
@@ -40,10 +49,10 @@ class Component(object):
                                 return None
                         return inner_wrapper
 
-                    self.entity.register_callback(callback, wrapper(callback))
+                    register_on.register_callback(callback, wrapper(callback))
                 else:
                     # just use the callback
-                    self.entity.register_callback(key, method)
+                    register_on.register_callback(key, method)
 
     def has_component(self, *args, **kwargs):
         if self.entity is not None:
