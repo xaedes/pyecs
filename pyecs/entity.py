@@ -3,6 +3,7 @@
 from __future__ import division
 
 from events import Events
+from component import Component
 
 from collections import defaultdict
 
