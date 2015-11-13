@@ -36,6 +36,7 @@ class Entity(Events):
             component.entity = self
             component.register_callbacks()
             self.components[type(component)].append(component)
+            Component.__added_components__[type(component)].append(component)
             self.fire_callbacks("component_added", component, component.entity)
 
             return component
@@ -43,8 +44,9 @@ class Entity(Events):
 
     def remove_component(self, component):
         if component in self.components[type(component)]:
-            self.components[type(component)].remove(component)
             component.entity = None
+            self.components[type(component)].remove(component)
+            Component.__added_components__[type(component)].remove(component)
             self.fire_callbacks("component_removed", component, self)
 
     def find_parent_entity_with_component(self, component_type):

@@ -62,16 +62,5 @@ class Component(object):
             return self.entity.find_parent_entity_with_component(*args, **kwargs)
         else:
             return None
-
-    @callback
-    def component_added(self, component, entity):
-        if self == component:
-            Component.__added_components__[type(component)].append(component)
-
-    @callback
-    def component_removed(self, component, entity):
-        if self == component:
-            Component.__added_components__[type(component)].remove(component)
-
     def __str__(self):
         return type(self).__name__
