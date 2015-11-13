@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name="pyecs",
-    version="0.0.4",
+    version="0.0.5",
     description="Python Entity Component System Framework inspired from Unity",
     long_description=readme(),
     url="http://github.com/xaedes/pyecs",
