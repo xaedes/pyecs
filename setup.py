@@ -14,8 +14,10 @@ setup(
     author_email="xaedes@gmail.com",
     license="MIT",
     packages=["pyecs","pyecs.components"],
+    dependency_links = ["https://github.com/xaedes/testing/tarball/master"],
+    tests_require=["pytest","testing"],
     install_requires=[
-        "funcy",
+        "funcy","pytest-runner"
     ],
     include_package_data=True,
     zip_safe=False
