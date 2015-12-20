@@ -196,7 +196,11 @@ class Entity(Events):
         return components
 		
     def __str__(self):
-        return "Entity %s, %s" % (self.uid_path(),  self.print_components(_return=True))
+        c = self.print_components(_return=True)
+        if c == "":
+            return "Entity %s" % self.uid_path()
+        else:
+            return "Entity %s %s" % (self.uid_path(),  c)
 
     def print_components(self, _return=False):
         components = map(str,self.all_components())

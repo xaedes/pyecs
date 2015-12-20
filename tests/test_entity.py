@@ -628,3 +628,108 @@ class TestEntity():
         assert e2.traverse_entities_accum(traverse_entities_accum,[]) == [e2,e3,e4]
         assert e3.traverse_entities_accum(traverse_entities_accum,[]) == [e3]
         assert e4.traverse_entities_accum(traverse_entities_accum,[]) == [e4]
+
+    def test_all_components(self):
+        Entity._reset_global()
+        e = Entity()
+
+        class Component1(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component1, self).__init__(*args, **kwargs)
+        class Component2(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component2, self).__init__(*args, **kwargs)
+
+        assert set(e.all_components()) == set([])
+        c1 = e.add_component(Component1())
+        assert set(e.all_components()) == set([c1])
+        c2 = e.add_component(Component2())
+        assert set(e.all_components()) == set([c1,c2])
+        c3 = e.add_component(Component2())
+        assert set(e.all_components()) == set([c1,c2,c3])
+        e.remove_component(c1)
+        assert set(e.all_components()) == set([c2,c3])
+        e.remove_component(c2)
+        assert set(e.all_components()) == set([c3])
+        e.remove_component(c3)
+        assert set(e.all_components()) == set([])
+
+    def test_print_components(self,capfd):
+        Entity._reset_global()
+        e = Entity()
+
+        class Component1(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component1, self).__init__(*args, **kwargs)
+            def __str__(self):
+                return str(("Component1", id(self)))
+        class Component2(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component2, self).__init__(*args, **kwargs)
+            def __str__(self):
+                return str(("Component2", id(self)))
+
+
+        c1 = e.add_component(Component1())
+        c2 = e.add_component(Component2())
+        c3 = e.add_component(Component2())
+
+        res = e.print_components(True)
+        assert "Component1" in res
+        assert str(id(c1)) in res
+        assert "Component2" in res
+        assert str(id(c2)) in res
+        assert "Component2" in res
+        assert str(id(c3)) in res
+
+        e.print_components()
+        out, err = capfd.readouterr()
+
+        assert out == res + "\n"
+
+    def test___str__(self):
+        Entity._reset_global()
+        e0 = Entity()
+        e1 = Entity()
+        e2 = Entity()
+        e0.add_entity(e1)
+        e1.add_entity(e2)
+        class Component1(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component1, self).__init__(*args, **kwargs)
+            def __str__(self):
+                return str("Component1")
+        
+        e2.add_component(Component1())
+        e2.add_component(Component1())
+
+        assert str(e0) == "Entity 0"
+        assert str(e1) == "Entity 0.1"
+        assert str(e2) == "Entity 0.1.2 Component1, Component1"
+
+    def test_print_structure(self,capfd):
+        Entity._reset_global()
+        e0 = Entity()
+        e1 = Entity()
+        e2 = Entity()
+        e0.add_entity(e1)
+        e1.add_entity(e2)
+        class Component1(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component1, self).__init__(*args, **kwargs)
+            def __str__(self):
+                return str("Component1")
+        
+        e2.add_component(Component1())
+        e2.add_component(Component1())
+
+        res = e0.print_structure(True)
+        assert res == "0        \n" + \
+                      "0.1      \n" + \
+                      "0.1.2    Component1, Component1"
+
+        e0.print_structure()
+        out, err = capfd.readouterr()
+
+        assert out == res + "\n"
+       
