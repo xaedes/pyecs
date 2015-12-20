@@ -1,3 +1,6 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 from pose import Pose
 from size import Size
 from pygame_component import Pygame

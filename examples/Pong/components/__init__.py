@@ -1,3 +1,6 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 from ball import Ball
 from paddle import Paddle
 from velocity import Velocity
