@@ -47,3 +47,9 @@ class TestPropagateCallback():
         e.fire_callbacks("foobar2")
         assert foobar1.called
         assert foobar2.not_called
+
+    def test_str(self):
+        assert str(PropagateCallback([])) == "PropagateCallback()"
+        assert str(PropagateCallback("foobar1")) == "PropagateCallback(foobar1)"
+        assert str(PropagateCallback(["foobar1"])) == "PropagateCallback(foobar1)"
+        assert str(PropagateCallback(["foobar1","foobar2"])) == "PropagateCallback(foobar1,foobar2)"
