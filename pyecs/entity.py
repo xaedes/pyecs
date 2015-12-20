@@ -166,7 +166,7 @@ class Entity(Events):
             if predicate(entity):
                 entities.append(entity)
 
-            stack.extend([child for child in entity.children])
+            stack.extend(reversed(entity.children))
 
         return entities
         
@@ -174,8 +174,7 @@ class Entity(Events):
         stack = [self]
         while len(stack)>0:
             entity = stack.pop()
-            for child in reversed(entity.children):
-                stack.append(child)
+            stack.extend(reversed(entity.children))
 
             callback(entity)
 

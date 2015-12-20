@@ -9,6 +9,9 @@ from .decorators import callback
 
 class Component(Events):
     __added_components__ = defaultdict(list)
+    @classmethod
+    def _reset_global(CLS):
+        Component.__added_components__ = defaultdict(list)
     """docstring for Component"""
     def __init__(self, entity = None):
         super(Component, self).__init__()
