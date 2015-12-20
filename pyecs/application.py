@@ -79,12 +79,13 @@ class Application(object):
 
         # prepare time measurement
         start_time = time()
-        self.last_time = time()
+        self.last_time = start_time
         # -------- Main Program Loop -----------
         while not self.done:
             # compute dt
-            dt = time()-self.last_time
-            self.last_time = time()
+            now = time()
+            dt = now-self.last_time
+            self.last_time = now
 
             # trigger hotswap event
             if onHotswap.notify:
@@ -108,10 +109,10 @@ def profile(operation, filename='profile'):
         pr.disable()
         pr.dump_stats(filename)
 
-def main():
-    # profile(App)
-    App()
+def main(module_name):
+    if module_name == '__main__':
+    # profile(Application)
+        Application()
 
-if __name__ == '__main__':
-    main()
+main(__name__)
 
