@@ -11,6 +11,11 @@ from collections import defaultdict
 class Entity(Events):
     __uid__ = 0
     __tags__ = defaultdict(set)
+    @classmethod
+    def _reset_global(CLS):
+        Entity.__uid__ = 0
+        Entity.__tags__ = defaultdict(set)
+
     """docstring for Entity"""
     def __init__(self, parent = None):
         super(Entity, self).__init__()
@@ -29,7 +34,7 @@ class Entity(Events):
     def remove_tag(self, tag):
         if tag in self.tags:
             Entity.__tags__[tag].remove(self)
-
+            self.tags.remove(tag)
 
 
     def add_component(self, component):
