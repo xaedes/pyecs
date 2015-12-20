@@ -12,12 +12,15 @@ class Component(Events):
     @classmethod
     def _reset_global(CLS):
         Component.__added_components__ = defaultdict(list)
+
     """docstring for Component"""
     def __init__(self, entity = None):
         super(Component, self).__init__()
         self.entity = entity
         # self.__hotswap_callback__ = True
         self.__hotswap_callback__ = False
+        self.imported_callable_attr_from_entity = ["has_component","get_component","find_parent_entity_with_component"]
+        self.imported_attr_from_entity = ["__uid__","children","parent","components","tags"]
 
     def register_callbacks(self):
         callbacks = [method for method in dir(self) if callable(getattr(self, method))]
@@ -57,22 +60,24 @@ class Component(Events):
                     # just use the callback
                     register_on.register_callback(key, method)
 
-    def has_component(self, *args, **kwargs):
-        if self.entity is not None:
-            return self.entity.has_component(*args, **kwargs)
-        else:
-            return None
 
-    def get_component(self, *args, **kwargs):
-        if self.entity is not None:
-            return self.entity.get_component(*args, **kwargs)
+    def __getattr__(self, attr):
+        '''
+        @summary:    import attr from self.entity
+        @param attr:
+        @result: 
+        '''
+        if (attr in self.imported_attr_from_entity) or (attr in self.imported_callable_attr_from_entity):
+            if (self.entity is not None) and hasattr(self.entity, attr):
+                return getattr(self.entity, attr)
+            else:
+                if attr in self.imported_attr_from_entity:
+                    return None
+                else:
+                    return lambda *args,**kwargs: None
         else:
-            return None
+            raise AttributeError()
 
-    def find_parent_entity_with_component(self, *args, **kwargs):
-        if self.entity is not None:
-            return self.entity.find_parent_entity_with_component(*args, **kwargs)
-        else:
-            return None
+
     def __str__(self):
         return type(self).__name__
