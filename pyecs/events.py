@@ -16,22 +16,30 @@ class Events(object):
     def __init__(self):
         super(Events, self).__init__()
         self.callbacks = defaultdict(list)
-
-    def init_callback_key(self, key):
-        self.callbacks[key] = []
+        self.callbacks_once = defaultdict(list)
 
     def register_callback(self, key, callback):
         if callback not in self.callbacks[key]:
             self.callbacks[key].append(callback)
 
+    def register_callback_once(self, key, callback):
+        if callback not in self.callbacks_once[key]:
+            self.callbacks_once[key].append(callback)
+
     def remove_callback(self, key, callback):
         if callback in self.callbacks[key]:
             self.callbacks[key].remove(callback)
+        if callback in self.callbacks_once[key]:
+            self.callbacks_once[key].remove(callback)
 
     def fire_callbacks(self, key, *args, **kwargs):
         if key in self.callbacks:
             for callback in self.callbacks[key]:
                 callback(*args,**kwargs)
+        if key in self.callbacks_once:
+            for callback in self.callbacks_once[key]:
+                callback(*args,**kwargs)
+            self.callbacks_once[key] = []
 
     # common events:
     # start        : called after setup/initialization complete, right before update loop starts
