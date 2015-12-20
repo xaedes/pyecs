@@ -12,12 +12,13 @@ def with_component(function, component_type, required = False):
     component = self.get_component(component_type)
     
     # check if required component is not available
-    if required and component is None:
+    if required and (component is None):
         return None
 
     # populate function's kwargs with components
     component_name = component_type.__name__.lower()
     function._kwargs[component_name] = component
+
 
     return function()
 
@@ -43,13 +44,36 @@ def with_components(function, optional = [], required = []):
 
     return function()
 
-def callback(function, key = None):
+def callback(function):
+    if type(function) == str:
+        key = function
+        def outer(function):
+            function.__callback__ = True
+            function.__component_callback__ = False
+            function.__callback_key__ = key
+
+            return function
+        return outer
+    else:
+        key = None
+        
     function.__callback__ = True
     function.__component_callback__ = False
     function.__callback_key__ = key
     return function
 
-def component_callback(function, key = None):
+def component_callback(function):
+    if type(function) == str:
+        key = function
+        def outer(function):
+            function.__callback__ = True
+            function.__component_callback__ = True
+            function.__callback_key__ = key
+            return function
+        return outer
+    else:
+        key = None
+
     function.__callback__ = True
     function.__component_callback__ = True
     function.__callback_key__ = key
