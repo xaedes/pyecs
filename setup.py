@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name="pyecs",
-    version="0.0.5",
+    version="0.0.6",
     description="Python Entity Component System Framework inspired from Unity",
     long_description=readme(),
     url="http://github.com/xaedes/pyecs",
@@ -14,7 +14,7 @@ setup(
     author_email="xaedes@gmail.com",
     license="MIT",
     packages=["pyecs","pyecs.components"],
-    dependency_links = ["https://github.com/xaedes/testing/tarball/master"],
+    dependency_links=["https://github.com/xaedes/testing/tarball/master"],
     tests_require=["pytest","testing"],
     install_requires=[
         "funcy","pytest-runner"
