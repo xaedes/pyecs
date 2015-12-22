@@ -6,7 +6,7 @@ from pyecs import *
 
 class Pose(Component):
     """docstring for Pose"""
-    def __init__(self, x, y, angle, *args,**kwargs):
+    def __init__(self, x, y, angle=0, *args,**kwargs):
         super(Pose, self).__init__(*args,**kwargs)
         self.x = x
         self.y = y
