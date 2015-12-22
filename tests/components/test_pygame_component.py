@@ -16,6 +16,20 @@ import pygame
 from itertools import imap
 
 class TestPygameComponent():
+    def test_init_default(self):
+        c = Pygame()
+        assert c.size == (640, 480)
+        assert c.caption == "caption"
+        assert c.fps == 60
+        assert c.flags == pygame.DOUBLEBUF
+
+    def test_init(self):
+        c = Pygame((1,2),"text",25,pygame.DOUBLEBUF | pygame.RESIZABLE)
+        assert c.size == (1,2)
+        assert c.caption == "text"
+        assert c.fps == 25
+        assert c.flags == pygame.DOUBLEBUF | pygame.RESIZABLE
+
     @mock.patch('pygame.init')
     @mock.patch('pygame.display.set_mode')
     @mock.patch('pygame.display.set_caption')
@@ -27,7 +41,7 @@ class TestPygameComponent():
         c.setup()
         assert hasattr(c,"screen") == True
         assert mocked_pygame_init.called
-        assert mocked_pygame_display_set_mode.called
+        mocked_pygame_display_set_mode.assert_called_once_with(c.size,c.flags)
         mocked_pygame_display_set_caption.assert_called_once_with(c.caption)
 
     @mock.patch('pyecs.components.pygame_component.Pygame.setup')
@@ -80,14 +94,11 @@ class TestPygameComponent():
 
         return Event(type)
                 
-    # @classmethod
-    # def _pygame_event_get(CLS):
     _event_types = [pygame.QUIT, pygame.ACTIVEEVENT, pygame.KEYDOWN, pygame.KEYUP, 
             pygame.MOUSEMOTION, pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN,
             pygame.JOYAXISMOTION, pygame.JOYBALLMOTION, pygame.JOYHATMOTION, 
             pygame.JOYBUTTONUP, pygame.JOYBUTTONDOWN, pygame.VIDEORESIZE,
             pygame.VIDEOEXPOSE, pygame.USEREVENT]
-        # return imap(CLS._event,iter(types))
 
     @mock.patch('pygame.display.flip')
     @mock.patch('pygame.mouse.get_pos')

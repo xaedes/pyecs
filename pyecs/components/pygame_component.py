@@ -7,11 +7,12 @@ from pyecs import *
 
 class Pygame(Component):
     """docstring for Pygame"""
-    def __init__(self, size = (640, 480), caption = "My Game", fps = 60, *args,**kwargs):
+    def __init__(self, size = (640, 480), caption = "caption", fps = 60, flags=pygame.DOUBLEBUF, *args,**kwargs):
         super(Pygame, self).__init__(*args,**kwargs)
         # Set the width and height of the screen [width, height]
         self.size = size
         self.caption = caption
+        self.flags = flags
         self.pygame_mappings = dict({
             pygame.QUIT: "quit",
             pygame.ACTIVEEVENT: "activeevent",
@@ -37,7 +38,7 @@ class Pygame(Component):
     @callback
     def setup(self):
         pygame.init()
-        self.screen = pygame.display.set_mode(self.size,pygame.DOUBLEBUF)
+        self.screen = pygame.display.set_mode(self.size,self.flags)
         pygame.display.set_caption(self.caption)
 
     @callback
