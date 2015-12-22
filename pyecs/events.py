@@ -41,6 +41,17 @@ class Events(object):
                 callback(*args,**kwargs)
             self.callbacks_once[key] = []
 
+    def fire_callbacks_pipeline(self, key, start_accum=None, *args, **kwargs):
+        accum = start_accum
+        if key in self.callbacks:
+            for callback in self.callbacks[key]:
+                accum = callback(accum,*args,**kwargs)
+
+        if key in self.callbacks_once:
+            for callback in self.callbacks_once[key]:
+                accum = callback(accum,*args,**kwargs)
+            self.callbacks_once[key] = []
+        return accum
     # common events:
     # start        : called after setup/initialization complete, right before update loop starts
     # update(dt)   : called in every iteration of the update loop

@@ -7,6 +7,8 @@ from pyecs.components import *
 from collections import defaultdict
 from testing import *
 
+from funcy import partial
+
 class TestEvents():
     def test_initial_state(self):
         e = Events()
@@ -127,3 +129,16 @@ class TestEvents():
         e.fire_callbacks("foo")
         assert not foo.called
         
+    @forEach("a",partial(generateRandomNormals,0,1),10)
+    @forEach("b",partial(generateRandomNormals,0,1),10)
+    @forEach("start_accum",generateNaturalIntegers,10)
+    def test_fire_callbacks_pipeline(self,a,b,start_accum):
+        e = Events()
+        import operator
+        # accum = add(a,start_accum)
+        e.register_callback("pipeline", partial(operator.add,a))
+        # accum = mul(b,accum)
+        e.register_callback("pipeline", partial(operator.mul,b))
+        # accum == b*(a+start_accum)
+
+        assert e.fire_callbacks_pipeline("pipeline", start_accum) == b*(a+start_accum)
