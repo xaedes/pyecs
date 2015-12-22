@@ -30,6 +30,19 @@ class TestPygameComponent():
         assert c.fps == 25
         assert c.flags == pygame.DOUBLEBUF | pygame.RESIZABLE
 
+    @mock.patch('pyecs.components.pygame_component.Pygame.setup')
+    @mock.patch('pygame.display.set_mode')
+    def test_resizable_videoresize_callback(self, mocked_pygame_display_set_mode, mocked_setup):
+        e = Entity()
+        c = Pygame(size=(1,1),flags=pygame.RESIZABLE)
+        e.add_component(c)
+        Event = namedtuple("Event",["size"])
+        assert c.size != (5,5)
+        e.fire_callbacks("videoresize",Event((5,5)))
+        assert c.size == (5,5)
+        mocked_pygame_display_set_mode.assert_called_once_with(c.size, c.flags)
+        assert c.screen == mocked_pygame_display_set_mode.return_value
+
     @mock.patch('pygame.init')
     @mock.patch('pygame.display.set_mode')
     @mock.patch('pygame.display.set_caption')
@@ -136,4 +149,5 @@ class TestPygameComponent():
         assert mocked_pygame_mouse_get_pressed.called
         assert mocked_pygame_key_get_pressed.called
 
+    
 

@@ -13,6 +13,7 @@ class Pygame(Component):
         self.size = size
         self.caption = caption
         self.flags = flags
+
         self.pygame_mappings = dict({
             pygame.QUIT: "quit",
             pygame.ACTIVEEVENT: "activeevent",
@@ -35,11 +36,22 @@ class Pygame(Component):
         self.fps = fps
         self.clock = pygame.time.Clock()
 
+    @component_callback
+    def component_attached(self):
+        if pygame.RESIZABLE & self.flags == pygame.RESIZABLE:
+            self.entity.register_callback("videoresize", self.onVideoresize)
+        self.setup()
+
+    def onVideoresize(self, event):
+        self.size = event.size
+        self.screen = pygame.display.set_mode(self.size,self.flags)
+
     @callback
     def setup(self):
         pygame.init()
         self.screen = pygame.display.set_mode(self.size,self.flags)
         pygame.display.set_caption(self.caption)
+
 
     @callback
     def quit(self, event):
@@ -70,11 +82,6 @@ class Pygame(Component):
         
         # Limit FPS
         self.clock.tick(self.fps)
-
-    @callback
-    def component_added(self, component, entity):
-        if self == component:
-            component.setup()
 
     @callback
     def hotswap(self):
