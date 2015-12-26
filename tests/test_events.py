@@ -142,3 +142,23 @@ class TestEvents():
         # accum == b*(a+start_accum)
 
         assert e.fire_callbacks_pipeline("pipeline", start_accum) == b*(a+start_accum)
+    
+    @forEach("a",partial(generateRandomNormals,0,1),10)
+    @forEach("b",partial(generateRandomNormals,0,1),10)
+    @forEach("start_accum",generateNaturalIntegers,10)
+    def test_fire_callbacks_pipeline_once(self,a,b,start_accum):
+        e = Events()
+        import operator
+        # accum = add(a,start_accum)
+        e.register_callback("pipeline", partial(operator.add,a))
+        # accum = mul(b,accum) 
+        e.register_callback_once("pipeline", partial(operator.mul,b))
+
+        # accum == b*(a+start_accum)
+
+        assert e.fire_callbacks_pipeline("pipeline", start_accum) == b*(a+start_accum)
+
+        # because multiplication was only once
+        # accum == a+start_accum
+        
+        assert e.fire_callbacks_pipeline("pipeline", start_accum) == a+start_accum
