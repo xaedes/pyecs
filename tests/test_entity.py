@@ -733,3 +733,73 @@ class TestEntity():
 
         assert out == res + "\n"
        
+    def test_remove_component_removes_callbacks(self):
+        e=Entity()
+        class Component1(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component1, self).__init__(*args, **kwargs)
+                self.foobar_called = False
+
+            @callback
+            def foobar(self):
+                self.foobar_called = True
+        c = Component1()
+        
+        e.add_component(c)
+        e.fire_callbacks("foobar")
+        assert c.foobar_called == True
+        
+        e.remove_component(c)
+        c.foobar_called = False
+        e.fire_callbacks("foobar")
+        assert c.foobar_called == False
+
+    def test_readded_component_callbacks(self):
+        e=Entity()
+        class Component1(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component1, self).__init__(*args, **kwargs)
+                self.foobar_called = False
+
+            @callback
+            def foobar(self):
+                self.foobar_called = True
+
+        c = Component1()
+        
+        e.add_component(c)
+        c.foobar_called = False
+        e.fire_callbacks("foobar")
+        assert c.foobar_called == True
+        
+        e.remove_component(c)
+        c.foobar_called = False
+        e.fire_callbacks("foobar")
+        assert c.foobar_called == False
+
+        e.add_component(c)
+        c.foobar_called = False
+        e.fire_callbacks("foobar")
+        assert c.foobar_called == True
+
+    def test_remove_component_doesnt_remove_component_callbacks(self):
+        e=Entity()
+        class Component1(Component):
+            def __init__(self, *args, **kwargs):
+                super(Component1, self).__init__(*args, **kwargs)
+                self.foobar_called = False
+
+            @component_callback
+            def foobar(self):
+                self.foobar_called = True
+        c = Component1()
+        
+        e.add_component(c)
+        c.foobar_called = False
+        c.fire_callbacks("foobar")
+        assert c.foobar_called == True
+        
+        e.remove_component(c)
+        c.foobar_called = False
+        c.fire_callbacks("foobar")
+        assert c.foobar_called == True

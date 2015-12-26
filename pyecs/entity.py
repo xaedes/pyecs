@@ -51,6 +51,7 @@ class Entity(Events):
     def remove_component(self, component):
         if component in self.components[type(component)]:
             ent = component.entity
+            component.unregister_callbacks()
             component.entity = None
             self.components[type(component)].remove(component)
             Component.__added_components__[type(component)].remove(component)

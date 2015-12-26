@@ -19,6 +19,7 @@ class Component(Events):
         self.entity = entity
         # self.__hotswap_callback__ = True
         self.__hotswap_callback__ = False
+        self._registered_callbacks = []
         self.imported_callable_attr_from_entity = ["has_component","get_component","find_parent_entity_with_component"]
         self.imported_attr_from_entity = ["__uid__","children","parent","components","tags"]
 
@@ -54,12 +55,19 @@ class Component(Events):
                             else:
                                 return None
                         return inner_wrapper
-
-                    register_on.register_callback(callback, wrapper(callback))
+                    w = wrapper(callback)
+                    register_on.register_callback(callback, w)
+                    if not method.__component_callback__:
+                        self._registered_callbacks.append((register_on,callback,w))
                 else:
                     # just use the callback
                     register_on.register_callback(key, method)
+                    if not method.__component_callback__:
+                        self._registered_callbacks.append((register_on,key,method))
 
+    def unregister_callbacks(self):
+        for register_on,key,method in self._registered_callbacks:
+            register_on.remove_callback(key,method)
 
     def __getattr__(self, attr):
         '''
