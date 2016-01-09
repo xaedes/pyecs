@@ -76,6 +76,13 @@ class TestEntity():
         assert "foo" in Entity.__tags__ # because __tags__ is a defaultdict(set) we only removed from the set
         assert e not in Entity.__tags__["foo"]
 
+    def test_has_tag(self):
+        Entity._reset_global()
+        e = Entity()
+        assert e.has_tag("foo") == False
+        e.add_tag("foo")
+        assert e.has_tag("foo") == True
+
     def test_add_component_when_added_does_nothing_and_returns_None(self):
         Entity._reset_global()
         e = Entity()

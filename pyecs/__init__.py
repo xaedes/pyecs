@@ -8,4 +8,4 @@ from .decorators import *
 from . import components
 from application import Application, profile
 
-version = "0.0.10"
+version = "0.0.11"

@@ -36,6 +36,8 @@ class Entity(Events):
             Entity.__tags__[tag].remove(self)
             self.tags.remove(tag)
 
+    def has_tag(self, tag):
+        return tag in self.tags
 
     def add_component(self, component):
         if component not in self.components[type(component)]:
@@ -157,7 +159,6 @@ class Entity(Events):
     @classmethod
     def find_entity_with_tags(CLS, tags):
         return CLS.first_or_none(list(CLS.find_entities_with_tags(tags)))
-
 
     def find_entities(self, predicate):
         entities = []
